@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  name: kafka-mesos
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-zk
+  template:
+    metadata:
+      name: kafka-zk
+      labels:
+        app: kafka-zk
+    spec:
+      containers:
+      - name: kafka-zk
+        image: mesosphere/kafka-client
+        imagePullPolicy: Always
+        command:
+          - "/bin/sh"
+          - "-c"
+          - >
+            tail -f /etc/passwd
+        securityContext:
+          privileged: true
